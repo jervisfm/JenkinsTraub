@@ -34,5 +34,12 @@ class MyTestCase(unittest.TestCase):
         for i in xrange(ans.size()):
             self.assertEqual(ans.coeff[i], expected_ans[i])
 
+    def test_poly_eq(self):
+        p1 = Poly(self.sample_poly_pow, self.sample_poly)
+        p2 = Poly(self.sample_poly_pow, self.sample_poly)
+        p3 = Poly(self.sample_poly_pow_2, self.sample_poly_2)
+        self.assertTrue(p1 == p2)
+        self.assertFalse(p1 == p3)
+
 if __name__ == '__main__':
     unittest.main()
