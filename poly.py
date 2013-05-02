@@ -20,14 +20,28 @@ class Poly:
             raise ValueError('There is mismatch between power of polynomial and coeffiecnts: %s vs %s' % (pow, coeff))
 
         self.coeff = []
+        # Make a Copy of Values
         for x in coeff:
             self.coeff.append(x)
+
+
 
     def highest_degree(self):
         return len(self.coeff) - 1
 
     def size(self):
         return len(self.coeff)
+
+
+    def __eq__(self, other):
+        if  (self.size() != other.size()):
+            return False
+        else:
+            size = self.size()
+            for i in xrange(size):
+                if (self.coeff[i] != other.coeff[i]):
+                    return False
+            return True
 
     def __str__(self):
         str = '| '

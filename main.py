@@ -18,10 +18,6 @@ def do_main(x0):
     print 'Using Polynomial with coefficents : %s' % str(x0)
 
 
-
-
-
-
 def usage():
     #TODO(jervis): update this
     print '**************'
