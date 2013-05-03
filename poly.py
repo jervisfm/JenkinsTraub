@@ -409,17 +409,14 @@ def solve_poly_jt(poly):
         # Termination Test
         if i > 0 and abs(t_curr - t_prev) <= 0.5 * abs(t_prev) and abs(t_next - t_curr) <= 0.5 * abs(t_curr):
             stage_two_terminated = True
-            print 'Success Stage Two terminated correctly'
+            print 'Success Stage Two terminated correctly at L = %d' % i
             break
 
         t_prev = t_curr
         h_poly = next_h_bar_poly
 
     if not stage_two_terminated:
-        print 'Failed to terminate correctly in stage 2'
-
-
-
+        print 'Failed to terminate correctly in stage 2 '
 
 
     # Stage 3
