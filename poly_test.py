@@ -138,5 +138,12 @@ class MyTestCase(unittest.TestCase):
 
         self.assertTrue(actual == expected)
 
+    def test_poly_get_highest_degree_of_non_zero_coeff(self):
+        p = get_empty_poly(3)
+        p.set_coeff_at_x_power(2,6)
+        expected = 2
+        actual = p.get_highest_degree_of_non_zero_coeff()
+        self.assertEqual(expected, actual)
+
 if __name__ == '__main__':
     unittest.main()

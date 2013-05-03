@@ -34,6 +34,15 @@ class Poly:
         return result
 
 
+    def get_copy(self):
+        """
+            Returns a copy of this polynomial
+        """
+        result = []
+        for x in self.coeff:
+            result.append(x)
+        return Poly(self.highest_degree(), result)
+
     def highest_degree(self):
         return len(self.coeff) - 1
 
@@ -122,6 +131,30 @@ class Poly:
         if new_power < 0:
             new_power = 0
         return Poly(new_power, result)
+
+
+    def get_highest_degree_of_non_zero_coeff(self):
+        """
+            Get the degree of the highest term with a non-zero coefficient.
+            If all coefficients are zero (polynomial is empty) - then None is returned.
+        """
+        i = 0
+        for coeff in self.coeff:
+            if coeff != 0:
+                return self.get_power_at_index(i)
+            i += 1
+        return None
+
+    def divide_linear_poly(self, x_coeff, x_const):
+        """
+            Divides this polynomial by given linear (1-degree_ polynomial
+            x_coeff - coefficient of the (x-)term
+            x_const - constant term
+        """
+
+        quotient = get_empty_poly(1)
+        remainder = self.get_copy()
+
 
 
     def __sub__(self, other):
