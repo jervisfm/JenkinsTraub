@@ -112,5 +112,19 @@ class MyTestCase(unittest.TestCase):
         expected = Poly(expected_pow, expected_coeff)
         actual = get_empty_poly(3)
         self.assertTrue(actual == expected)
+
+    def test_set_coeff_at_x_power(self):
+        expected_coeff = [6, -3, 0, 7]
+        expected_pow = 3
+        expected = Poly(expected_pow, expected_coeff)
+
+        p = get_empty_poly(3)
+        p.set_coeff_at_x_power(0,7)
+        p.set_coeff_at_x_power(1,0)
+        p.set_coeff_at_x_power(2,-3)
+        p.set_coeff_at_x_power(3,6)
+        actual = p
+        self.assertTrue(actual == expected)
+
 if __name__ == '__main__':
     unittest.main()

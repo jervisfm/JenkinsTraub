@@ -182,11 +182,34 @@ class Poly:
             pos = last_idx - pow
             return self.coeff[pos]
 
+    def set_coeff_at_x_power(self, pow, val):
+        """
+            Sets the coefficient of an x-term of given power to the given value
+            pow - power of x term
+            val - new value of this x-term
+
+            Note that the given power must exist or an error will be thrown
+        """
+        max_pow = self.highest_degree()
+        if pow > max_pow:
+            raise ValueError('Invalid Power: %s' % pow)
+        elif pow < 0:
+            raise ValueError('Negative power arg given: %s' % pow)
+        else:
+            last_idx = self.size() - 1
+            pos = last_idx - pow
+            self.coeff[pos] = val
+            return self
 
 
 class Term:
-    def __init__(self):
-        self.pow = 0
+    def __init__(self, coeff=0, deg=0):
+        """
+            Creates a new term
+            deg - degree of the term
+            coeff - coefficient of the
+        """
+        self.deg = 0
         self.coeff = 0
 
     def __str__(self):
@@ -200,7 +223,9 @@ class Term:
             x_coeff - coefficient of the x^1 term
             x_const - coefficient of the x^0 term
         """
-        pass
+        new_poly_deg = self.deg + 1
+
+
 
 def get_empty_poly(deg):
     """
