@@ -136,7 +136,16 @@ class Poly:
         return Poly(new_power, result)
 
 
-
+    def normalize(self):
+        """
+            Divides the polynomial by the leading coefficient
+        """
+        result = []
+        norm_const = self.coeff[0]
+        for coeff in self.coeff:
+            val = coeff / (1.0 * norm_const)
+            result.append(val)
+        return Poly(self.highest_degree(), result)
 
     def get_highest_degree_of_non_zero_coeff(self):
         """
@@ -198,7 +207,7 @@ class Poly:
         curr_deg = remainder.highest_degree()
         result = []
         for i in xrange(num_iterations):
-            quotient_coeff = float(remainder.coeff[dividend_idx]) / x_coeff
+            quotient_coeff = (1.0 * remainder.coeff[dividend_idx]) / x_coeff
             result.append(quotient_coeff)
             term = Term(quotient_coeff,curr_deg - 1)
             poly_term = term.multiply_linear_poly(x_coeff, x_const)
@@ -347,7 +356,7 @@ def solve_poly_newton(poly, err):
     x = random.uniform(0,1)
     diff_poly = poly.get_derivative()
     while abs(poly.eval(x)) > abs(err):
-        x = x - (poly.eval(x) / float(diff_poly.eval(x)))
+        x = x - (poly.eval(x) / (1.0*diff_poly.eval(x)))
     return x
 
 
@@ -358,5 +367,48 @@ def get_initial_s(poly):
     beta = solve_poly_newton(cauchy_poly, err)
     rand = random.uniform(0,1) * math.pi
     return abs(beta) * cmath.exp(1j * rand)
+
+def solve_poly_jt(poly):
+    """
+        Find the smallest of given polynomial by using the Jenkins-Traub Algorithm.
+        poly - polynomial to solve
+    """
+    #TODO(jervis): complete implementing this
+
+    # Stage 1
+    # We skip stage 1 because it does not matter from a theoretical standpoint
+
+    # Stage 2
+    # ========
+    s = get_initial_s(poly)
+    h_poly = poly.get_derivative()
+
+    # TODO(jervis): remember to implement the retrial aspect. ignoring for now...
+
+    L = 10 ** 4
+
+    for i  in xrange(L):
+
+        # Compute the Ts which we use to know when to stop
+        t0 = s - poly.eval(s) / 1
+
+
+
+        # Compute the next H-Polynomial
+        const = -h_poly.eval(s) / poly.eval(s)
+        pz_poly = poly.const_mult(const)
+        adjust_h_poly = h_poly + pz_poly
+
+        # compute the next H-Poly
+        poly.divide_linear_poly()
+        h_poly = adjust_h_poly.divide_linear_poly(1, -s)
+
+
+    # Stage 3
+    # ========
+
+
+
+
 
 

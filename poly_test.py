@@ -166,7 +166,6 @@ class MyTestCase(unittest.TestCase):
         p = Poly(self.sample_poly_pow, self.sample_poly)
         actual = p.get_cauchy_poly()
 
-        #expected_coeff = [1, 11, 17, -6]
         expected_coeff = [1, 5.5, 8.5, -3]
 
         expected_pow = len(expected_coeff) - 1
@@ -186,7 +185,6 @@ class MyTestCase(unittest.TestCase):
 
 
     def test_get_initial_s(self):
-
         p = Poly(self.sample_poly_pow, self.sample_poly)
         actual = get_initial_s(p)
         actual_abs = abs(actual)
@@ -194,6 +192,17 @@ class MyTestCase(unittest.TestCase):
         err = 10 ** (-4)
 
         self.assertAlmostEquals(actual_abs, expected, delta=err)
+
+    def test_poly_normalize(self):
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+        actual = p.normalize()
+        expected_coeff = [1, -5.5, 8.5, -3]
+
+        expected_pow = len(expected_coeff) - 1
+        expected = Poly(expected_pow, expected_coeff)
+
+        self.assertTrue(expected == actual)
+
 
 
 if __name__ == '__main__':
