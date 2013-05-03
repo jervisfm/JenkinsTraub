@@ -86,6 +86,14 @@ class MyTestCase(unittest.TestCase):
 
         self.assertTrue(expected == actual)
 
+    def test_poly_negate(self):
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+
+        expected_coeff = map(lambda x: -x, self.sample_poly) 
+        expected = Poly(p.highest_degree(), expected_coeff)
+        actual = p.negate()
+        self.assertTrue(expected == actual)
+
 
 if __name__ == '__main__':
     unittest.main()

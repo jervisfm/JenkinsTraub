@@ -124,6 +124,17 @@ class Poly:
         return Poly(new_power, result)
 
 
+    def negate(self):
+        """
+            Negates this polynomial.
+            Does so non-destructively
+        """
+        result = []
+        for x in self.coeff:
+            result.append(-x)
+        return Poly(self.highest_degree(), result)
+
+
     def const_mult(self, c):
         """
             Multiplies through this polynomial by the given constant
