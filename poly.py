@@ -147,6 +147,26 @@ class Poly:
             i += 1
         return None
 
+    def get_cauchy_poly(self):
+        """
+            Returns the Cauchy Polynomial from this polynomial
+        """
+        first_idx = 0
+        last_idx = self.size() - 1
+        size = self.size()
+        result = []
+        for i in xrange(size):
+            if i == first_idx:
+                result.append(1)
+            elif i == last_idx:
+                val = -abs(self.coeff[i])
+                result.append(val)
+            else:
+                val = abs(self.coeff[i])
+                result.append(val)
+        return Poly(self.highest_degree(), result)
+
+
     def divide_linear_poly(self, x_coeff, x_const):
         """
             Divides this polynomial by given linear (1-degree_ polynomial

@@ -162,5 +162,15 @@ class MyTestCase(unittest.TestCase):
         expected = Poly(expected_pow, expected_coeff)
         self.assertTrue(expected == actual)
 
+    def test_get_cauchy_poly(self):
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+        actual = p.get_cauchy_poly()
+
+        expected_coeff = [1, 11, 17, -6]
+        expected_pow = len(expected_coeff) - 1
+        expected = Poly(expected_pow, expected_coeff)
+
+        self.assertTrue(expected == actual)
+        
 if __name__ == '__main__':
     unittest.main()
