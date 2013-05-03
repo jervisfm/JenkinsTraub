@@ -397,7 +397,6 @@ def solve_poly_jt(poly):
         adjust_h_poly = h_poly + pz_poly
 
         # compute the next H-Poly
-        poly.divide_linear_poly()
         next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
 
         # Compute the Ts which we use to know when to stop

@@ -204,6 +204,13 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(expected == actual)
 
 
+    def test_jt_stage_2(self):
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+        solve_poly_jt(p)
+
+
+        self.assertTrue(1 == 1)
+
 
 if __name__ == '__main__':
     unittest.main()
