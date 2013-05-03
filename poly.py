@@ -387,13 +387,10 @@ def solve_poly_jt(poly):
 
     L = 10 ** 4
 
-    for i  in xrange(L):
 
-        # Compute the Ts which we use to know when to stop
-        t0 = s - poly.eval(s) / 1
-
-
-
+    t_curr = t_prev = t_next = None
+    stage_two_terminated = False
+    for i in xrange(L):
         # Compute the next H-Polynomial
         const = -h_poly.eval(s) / poly.eval(s)
         pz_poly = poly.const_mult(const)
@@ -401,7 +398,29 @@ def solve_poly_jt(poly):
 
         # compute the next H-Poly
         poly.divide_linear_poly()
-        h_poly = adjust_h_poly.divide_linear_poly(1, -s)
+        next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
+
+        # Compute the Ts which we use to know when to stop
+        h_bar_poly = h_poly.normalize() # normalize polynomial by dividing by leading coefficient
+        next_h_bar_poly = next_h_poly.normalize()
+
+        t_curr = s - poly.eval(s) / (1.0 * h_bar_poly.eval(s))
+        t_next = s - poly.eval(s) / (1.0 * next_h_bar_poly.eval(s))
+
+        # Termination Test
+        if i > 0 and abs(t_curr - t_prev) <= 0.5 * abs(t_prev) and abs(t_next - t_curr) <= 0.5 * abs(t_curr):
+            stage_two_terminated = True
+            print 'Success Stage Two terminated correctly'
+            break
+
+        t_prev = t_curr
+        h_poly = next_h_bar_poly
+
+    if not stage_two_terminated:
+        print 'Failed to terminate correctly in stage 2'
+
+
+
 
 
     # Stage 3
