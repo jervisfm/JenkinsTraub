@@ -52,13 +52,13 @@ class Poly:
             return True
 
     def __str__(self):
-        str = '| '
+        s = '| '
         pow = self.highest_degree()
         for x in self.coeff:
-            str += '(%s,%s), ' % (x, pow)
+            s += '(%s,%s), ' % (x, pow)
             pow -= 1
-        str = ' | '
-        return str
+        s += ' | '
+        return s
 
     def __repr__(self):
         return self.__str__()
@@ -108,13 +108,27 @@ class Poly:
 
 
     def get_derivative(self):
+        """
+            Computes the derivative of this polynomial
+        """
         result = []
+        size = self.size()
 
+        for i in xrange(size - 1): # skip constant term
+            curr_deg = self.get_power_at_index(i)
+            curr_coeff = self.get_x_power_coeff(curr_deg)
+            new_coeff = curr_deg * curr_coeff
+            result.append(new_coeff)
+        new_power = self.highest_degree() - 1 # derivative will be one power lower
+        if new_power < 0:
+            new_power = 0
+        return Poly(new_power, result)
 
     def get_power_at_index(self, i):
         """
             Translate the index value to an x-power value
             (i.e. the value of term degree at given position)
+            i - the index (0-based)
         """
         max_index = self.size() - 1
         if i < 0 or i > max_index:
@@ -128,10 +142,12 @@ class Poly:
             Returns the coefficeint of the given x-power
         """
         max_pow = self.highest_degree()
-        if (pow > max_pow):
+        if pow > max_pow:
             raise ValueError('Invalid Power Arguemnt: %s' % str(pow))
-        elif (pow == 0):
-            last_idx = self.size() - 1
-            return self.coeff(last_idx)
-        else: # It's a negative power
+        elif pow < 0:
             raise ValueError('This polynomial does not support negative x-powers')
+        else: # it's some other number
+            last_idx = self.size() - 1
+            pos = last_idx - pow
+            return self.coeff[pos]
+

@@ -66,6 +66,16 @@ class MyTestCase(unittest.TestCase):
             self.assertEqual(actual, expected)
             index += 1
             cur_deg -= 1
-        
+
+    def test_poly_get_derivative(self):
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+
+        expected_ans = [6, -22, 17]
+        expected = Poly(p.highest_degree() - 1, expected_ans)
+        actual = p.get_derivative()
+
+        self.assertTrue(expected == actual)
+
+
 if __name__ == '__main__':
     unittest.main()
