@@ -124,6 +124,15 @@ class Poly:
         return Poly(new_power, result)
 
 
+    def __sub__(self, other):
+        """
+            Does polynomial subtraction in a non-destructive manner.
+            Computes this - other
+            other - the polynomial to substraction
+        """
+        neg_poly = other.negate()
+        return self.__add__(neg_poly)
+
     def negate(self):
         """
             Negates this polynomial.

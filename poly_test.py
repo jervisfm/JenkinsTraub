@@ -89,10 +89,21 @@ class MyTestCase(unittest.TestCase):
     def test_poly_negate(self):
         p = Poly(self.sample_poly_pow, self.sample_poly)
 
-        expected_coeff = map(lambda x: -x, self.sample_poly) 
+        expected_coeff = map(lambda x: -x, self.sample_poly)
         expected = Poly(p.highest_degree(), expected_coeff)
         actual = p.negate()
         self.assertTrue(expected == actual)
+
+    def test_poly_subtraction(self):
+        p1 = Poly(self.sample_poly_pow, self.sample_poly)
+        p2 = Poly(self.sample_poly_pow_2, self.sample_poly_2)
+
+        expected_ans = [2, -17, 30, -13]
+        ans  = p1 - p2
+
+        self.assertTrue(ans.size() == len(expected_ans))
+        for i in xrange(ans.size()):
+            self.assertEqual(ans.coeff[i], expected_ans[i])
 
 
 if __name__ == '__main__':
