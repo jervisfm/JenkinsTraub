@@ -113,7 +113,7 @@ class MyTestCase(unittest.TestCase):
         actual = get_empty_poly(3)
         self.assertTrue(actual == expected)
 
-    def test_set_coeff_at_x_power(self):
+    def test_poly_set_coeff_at_x_power(self):
         expected_coeff = [6, -3, 0, 7]
         expected_pow = 3
         expected = Poly(expected_pow, expected_coeff)
@@ -124,6 +124,18 @@ class MyTestCase(unittest.TestCase):
         p.set_coeff_at_x_power(2,-3)
         p.set_coeff_at_x_power(3,6)
         actual = p
+        self.assertTrue(actual == expected)
+
+    def test_term_multiply_linear_poly(self):
+
+        t = Term(2,2)
+        actual = t.multiply_linear_poly(1,-3)
+
+        expected_coeff = [2,-6,0,0]
+        expected_pow = len(expected_coeff) - 1
+
+        expected = Poly(expected_pow, expected_coeff)
+
         self.assertTrue(actual == expected)
 
 if __name__ == '__main__':

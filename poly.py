@@ -209,8 +209,10 @@ class Term:
             deg - degree of the term
             coeff - coefficient of the
         """
-        self.deg = 0
-        self.coeff = 0
+        if deg < 0:
+            raise ValueError("Degree cannot be negative")
+        self.deg = deg
+        self.coeff = coeff
 
     def __str__(self):
         return '(%s,%s)' % (self.coeff, self.pow)
@@ -222,8 +224,17 @@ class Term:
             Multiplies this term with the provided linear (1-degree) polynomial
             x_coeff - coefficient of the x^1 term
             x_const - coefficient of the x^0 term
+
+            Returns a Polynomial object
         """
         new_poly_deg = self.deg + 1
+        poly = get_empty_poly(new_poly_deg)
+        highest_term_coeff = x_coeff * self.coeff
+        second_highest_term_coeff = x_const * self.coeff
+
+        poly.set_coeff_at_x_power(new_poly_deg, highest_term_coeff)
+        poly.set_coeff_at_x_power(new_poly_deg - 1, second_highest_term_coeff)
+        return poly
 
 
 
