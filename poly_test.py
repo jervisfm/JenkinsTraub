@@ -77,5 +77,15 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(expected == actual)
 
 
+    def test_poly_const_mult(self):
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+        multipler = 7
+        expected_coeff = map(lambda x: multipler*x, self.sample_poly)
+        expected = Poly(p.highest_degree(), expected_coeff)
+        actual = p.const_mult(multipler)
+
+        self.assertTrue(expected == actual)
+
+
 if __name__ == '__main__':
     unittest.main()

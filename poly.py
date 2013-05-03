@@ -106,7 +106,6 @@ class Poly:
             return Poly(big_poly.highest_degree(), result)
 
 
-
     def get_derivative(self):
         """
             Computes the derivative of this polynomial
@@ -123,6 +122,18 @@ class Poly:
         if new_power < 0:
             new_power = 0
         return Poly(new_power, result)
+
+
+    def const_mult(self, c):
+        """
+            Multiplies through this polynomial by the given constant
+            c - constant to multiply
+        """
+        result = []
+        for x in self.coeff:
+            val = c * x
+            result.append(val)
+        return Poly(self.highest_degree(), result)
 
     def get_power_at_index(self, i):
         """
