@@ -166,11 +166,20 @@ class MyTestCase(unittest.TestCase):
         p = Poly(self.sample_poly_pow, self.sample_poly)
         actual = p.get_cauchy_poly()
 
-        expected_coeff = [1, 11, 17, -6]
+        #expected_coeff = [1, 11, 17, -6]
+        expected_coeff = [1, 5.5, 8.5, -3]
+
         expected_pow = len(expected_coeff) - 1
         expected = Poly(expected_pow, expected_coeff)
 
         self.assertTrue(expected == actual)
-        
+
+    def test_solve_poly_newton(self):
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+        err = 10 ** -5
+        #solve_poly_newton(p, err)
+
+
+
 if __name__ == '__main__':
     unittest.main()

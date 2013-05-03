@@ -1,6 +1,7 @@
 
 __author__ = 'Jervis Muindi'
 
+import random
 
 class Poly:
     """
@@ -155,14 +156,27 @@ class Poly:
         last_idx = self.size() - 1
         size = self.size()
         result = []
+
+        do_normalize = False
+        norm_const = 0
         for i in xrange(size):
             if i == first_idx:
+                val = self.coeff[i]
+                if val != 1:
+                    do_normalize = True
+                    norm_const = val
                 result.append(1)
             elif i == last_idx:
-                val = -abs(self.coeff[i])
+                val = self.coeff[i]
+                if do_normalize:
+                    val /= 1.0 * norm_const
+                val = -abs(val)
                 result.append(val)
             else:
-                val = abs(self.coeff[i])
+                val = self.coeff[i]
+                if do_normalize:
+                    val /= 1.0 * norm_const
+                val = abs(val)
                 result.append(val)
         return Poly(self.highest_degree(), result)
 
@@ -320,3 +334,21 @@ def get_empty_poly(deg):
     for _ in xrange(size):
         result.append(0)
     return Poly(deg, result)
+
+def solve_poly_newton(poly, err):
+    """
+        Find root of given polynomial by apply newton iteration
+
+        poly - is the polynomial to use
+        err - is the maximum error permitted in answer
+    """
+    x = random.uniform(0,1)
+    diff_poly = poly.get_derivative()
+    while abs(poly.eval(x)) > abs(err):
+        x = x - (poly.eval(x) / float(diff_poly.eval(x)))
+    return x
+
+
+def get_initial_s(poly):
+
+    cauchy_poly = poly.get_cauchy_poly()
