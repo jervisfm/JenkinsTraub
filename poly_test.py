@@ -145,5 +145,22 @@ class MyTestCase(unittest.TestCase):
         actual = p.get_highest_degree_of_non_zero_coeff()
         self.assertEqual(expected, actual)
 
+    def test_poly_divide_linear_poly(self):
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+        actual = p.divide_linear_poly(1, -3)
+
+        expected_coeff = [2, -5, 2]
+        expected_pow = len(expected_coeff) - 1
+        expected = Poly(expected_pow, expected_coeff)
+
+        self.assertTrue(expected == actual)
+
+        # Test non-perfect division example
+        actual = p.divide_linear_poly(1,-4)
+        expected_coeff = [2, -3, 5]
+        expected_pow = len(expected_coeff) - 1
+        expected = Poly(expected_pow, expected_coeff)
+        self.assertTrue(expected == actual)
+
 if __name__ == '__main__':
     unittest.main()

@@ -133,6 +133,8 @@ class Poly:
         return Poly(new_power, result)
 
 
+
+
     def get_highest_degree_of_non_zero_coeff(self):
         """
             Get the degree of the highest term with a non-zero coefficient.
@@ -155,8 +157,24 @@ class Poly:
         quotient = get_empty_poly(1)
         remainder = self.get_copy()
 
+        num_iterations = remainder.highest_degree()
+        dividend_idx = 0
+        curr_deg = remainder.highest_degree()
+        result = []
+        for i in xrange(num_iterations):
+            quotient_coeff = float(remainder.coeff[dividend_idx]) / x_coeff
+            result.append(quotient_coeff)
+            term = Term(quotient_coeff,curr_deg - 1)
+            poly_term = term.multiply_linear_poly(x_coeff, x_const)
+            remainder = remainder.__sub__(poly_term)
 
+            # zero out the highest term just in case we still have residuals
+            remainder.set_coeff_at_x_power(curr_deg, 0)
 
+            dividend_idx += 1
+            curr_deg -= 1
+
+        return Poly(self.highest_degree() - 1, result)
     def __sub__(self, other):
         """
             Does polynomial subtraction in a non-destructive manner.
