@@ -12,7 +12,7 @@ class Poly:
             Creates a new polynomial
             pow - the highest degree of the polynomial
             coeff - is a listing of coefficients.
-            The first element of this list represents the coefficient of highest x-term in the polynimal
+            The first element of this list represents the coefficient of highest x-term in the polynomial
             The last element of this list should represent the constant term.
             Note that all the coefficients should be in the list - if they do have a value, they should be set to 0.
         """
@@ -24,6 +24,14 @@ class Poly:
         for x in coeff:
             self.coeff.append(x)
 
+
+    def eval(self, x):
+        result = 0
+        curr_pow = self.highest_degree()
+        for c in self.coeff:
+            result += c * (x ** curr_pow)
+            curr_pow -= 1
+        return result
 
 
     def highest_degree(self):

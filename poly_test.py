@@ -41,5 +41,18 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(p1 == p2)
         self.assertFalse(p1 == p3)
 
+    def test_poly_eval(self):
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+
+        actual = p.eval(0)
+        expected = -6
+        self.assertEqual(actual, expected)
+
+        #Test a some random number
+        actual = p.eval(17)
+        expected = 6930
+        self.assertEqual(actual, expected)
+
+
 if __name__ == '__main__':
     unittest.main()
