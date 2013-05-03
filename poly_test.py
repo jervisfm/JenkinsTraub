@@ -106,5 +106,11 @@ class MyTestCase(unittest.TestCase):
             self.assertEqual(ans.coeff[i], expected_ans[i])
 
 
+    def test_get_empty_poly(self):
+        expected_coeff = [0, 0, 0, 0]
+        expected_pow = 3
+        expected = Poly(expected_pow, expected_coeff)
+        actual = get_empty_poly(3)
+        self.assertTrue(actual == expected)
 if __name__ == '__main__':
     unittest.main()

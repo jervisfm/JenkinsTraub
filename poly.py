@@ -182,3 +182,34 @@ class Poly:
             pos = last_idx - pow
             return self.coeff[pos]
 
+
+
+class Term:
+    def __init__(self):
+        self.pow = 0
+        self.coeff = 0
+
+    def __str__(self):
+        return '(%s,%s)' % (self.coeff, self.pow)
+    def __repr__(self):
+        return self.__str__()
+
+    def multiply_linear_poly(self, x_coeff, x_const):
+        """
+            Multiplies this term with the provided linear (1-degree) polynomial
+            x_coeff - coefficient of the x^1 term
+            x_const - coefficient of the x^0 term
+        """
+        pass
+
+def get_empty_poly(deg):
+    """
+    Creates a new empty polynomial of the given degree
+    """
+    if deg < 0:
+        raise ValueError('Invalid polynomial degree')
+    size = deg + 1
+    result = []
+    for _ in xrange(size):
+        result.append(0)
+    return Poly(deg, result)
