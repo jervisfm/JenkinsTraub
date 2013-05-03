@@ -11,7 +11,7 @@ class Poly:
         """
             Creates a new polynomial
             pow - the highest degree of the polynomial
-            coeff - is a listing of coefficients.
+            coeff - is a listing of (complex) coefficients.
             The first element of this list represents the coefficient of highest x-term in the polynomial
             The last element of this list should represent the constant term.
             Note that all the coefficients should be in the list - if they do have a value, they should be set to 0.
@@ -107,7 +107,26 @@ class Poly:
 
 
 
+    def get_derivative(self):
+        result = []
+
+
+    def get_power_at_index(self, i):
+        """
+            Translate the index value to an x-power value
+            (i.e. the value of term degree at given position)
+        """
+        max_index = self.size() - 1
+        if i < 0 or i > max_index:
+            raise ValueError('Invalid index: %s', i)
+        max_degree = self.highest_degree()
+        return max_degree - i
+
+
     def get_x_power_coeff(self, pow):
+        """
+            Returns the coefficeint of the given x-power
+        """
         max_pow = self.highest_degree()
         if (pow > max_pow):
             raise ValueError('Invalid Power Arguemnt: %s' % str(pow))

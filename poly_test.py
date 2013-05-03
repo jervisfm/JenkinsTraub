@@ -54,5 +54,18 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(actual, expected)
 
 
+    def test_poly_get_power_at_index(self):
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+
+        max_deg = p.highest_degree()
+        cur_deg = max_deg
+        index = 0
+        for c in p.coeff:
+            actual = p.get_power_at_index(index)
+            expected = cur_deg
+            self.assertEqual(actual, expected)
+            index += 1
+            cur_deg -= 1
+        
 if __name__ == '__main__':
     unittest.main()
