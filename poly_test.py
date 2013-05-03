@@ -176,9 +176,24 @@ class MyTestCase(unittest.TestCase):
 
     def test_solve_poly_newton(self):
         p = Poly(self.sample_poly_pow, self.sample_poly)
-        err = 10 ** -5
-        #solve_poly_newton(p, err)
+        err = 10 ** -6
+        cauchy_poly = p.get_cauchy_poly()
+        actual = solve_poly_newton(cauchy_poly, err)
+        expected = 0.294016
 
+        self.assertAlmostEquals(actual, expected, delta=err)
+
+
+
+    def test_get_initial_s(self):
+
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+        actual = get_initial_s(p)
+        actual_abs = abs(actual)
+        expected = 0.294016
+        err = 10 ** (-4)
+
+        self.assertAlmostEquals(actual_abs, expected, delta=err)
 
 
 if __name__ == '__main__':

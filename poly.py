@@ -2,6 +2,8 @@
 __author__ = 'Jervis Muindi'
 
 import random
+import cmath
+import math
 
 class Poly:
     """
@@ -350,5 +352,11 @@ def solve_poly_newton(poly, err):
 
 
 def get_initial_s(poly):
-
     cauchy_poly = poly.get_cauchy_poly()
+    err = 10 ** (-5)
+
+    beta = solve_poly_newton(cauchy_poly, err)
+    rand = random.uniform(0,1) * math.pi
+    return abs(beta) * cmath.exp(1j * rand)
+
+
