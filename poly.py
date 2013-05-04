@@ -37,6 +37,7 @@ class Poly:
         return result
 
 
+
     def get_copy(self):
         """
             Returns a copy of this polynomial
@@ -62,6 +63,16 @@ class Poly:
                 if (self.coeff[i] != other.coeff[i]):
                     return False
             return True
+
+    def pretty_string(self):
+        s = ''
+        pow = self.highest_degree()
+        for x in self.coeff:
+            s += '(%s+(%s*I))*x^%s' % (x.real, x.imag, pow)
+            pow -= 1
+            if pow > -1:
+                s += ' + '
+        return s
 
     def __str__(self):
         s = '| '
@@ -376,21 +387,47 @@ def solve_poly_jt(poly):
     #TODO(jervis): complete implementing this
 
     # Stage 1
-    # We skip stage 1 because it does not matter from a theoretical standpoint
+    # It's _very_ good to include this stage in practice though it's not needed theoretically.
+
+    M = 5 # 5 is empirically good for polynomials with degree < 50
+    h_poly = poly.get_derivative()
+    s = 0
+    for i in xrange(M):
+        # Compute the next H-Polynomial
+        const = -h_poly.eval(s) / poly.eval(s)
+        pz_poly = poly.const_mult(const)
+        adjust_h_poly = h_poly + pz_poly
+
+        # compute the next H-Poly
+        h_poly = adjust_h_poly.divide_linear_poly(1, 0)
+
+
 
     # Stage 2
     # ========
     s = get_initial_s(poly)
-    h_poly = poly.get_derivative()
+
+
+    # REMOVE THIS
+    #print s
+    #exit(1)
+
+    #DEBUGGING ONLY .. DELETE ME
+    #s = complex(0.281670991015,0.0843018871362)
+    s = complex(-0.27627567979,0.103671323125)
+
+
 
     # TODO(jervis): remember to implement the retrial aspect. ignoring for now...
 
     L = 10 ** 4
 
-
     t_curr = t_prev = t_next = None
     stage_two_terminated = False
+
+    print 's = %s' % s
     for i in xrange(L):
+
         # Compute the next H-Polynomial
         const = -h_poly.eval(s) / poly.eval(s)
         pz_poly = poly.const_mult(const)
@@ -398,6 +435,14 @@ def solve_poly_jt(poly):
 
         # compute the next H-Poly
         next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
+
+        #print "s=%s | err:%s" %(s,abs(poly.eval(s)))
+        print 'h_poly = %s' % h_poly.pretty_string()
+        print 'const  = %s' % const
+        print 'pz_poly = %s' % pz_poly.pretty_string()
+        print 'adjust-h-poly = %s' % adjust_h_poly.pretty_string()
+        print 'divided-result = %s' % next_h_poly.pretty_string()
+
 
         # Compute the Ts which we use to know when to stop
         h_bar_poly = h_poly.normalize() # normalize polynomial by dividing by leading coefficient
@@ -409,11 +454,15 @@ def solve_poly_jt(poly):
         # Termination Test
         if i > 0 and abs(t_curr - t_prev) <= 0.5 * abs(t_prev) and abs(t_next - t_curr) <= 0.5 * abs(t_curr):
             stage_two_terminated = True
-            print 'Success Stage Two terminated correctly at L = %d' % i
-            break
+            #print 'Success Stage Two terminated correctly at L = %d' % i
+            #break
 
         t_prev = t_curr
-        h_poly = next_h_bar_poly
+        h_poly = next_h_poly
+
+        print '========'
+        if (i == 3):
+            exit (1)
 
     if not stage_two_terminated:
         print 'Failed to terminate correctly in stage 2 '
@@ -421,6 +470,42 @@ def solve_poly_jt(poly):
 
     # Stage 3
     # ========
+
+    LIMIT = 10 ** 5
+    err = 10 ** (-5)
+
+    # compute first shifted s
+    h_bar_poly = h_poly.normalize()
+    s = s - (poly.eval(s) / (1.0 * h_bar_poly.eval(s)))
+    stage_3_success = False
+    for i in xrange(LIMIT):
+
+        # Compute the next H-Polynomial
+        const = -h_poly.eval(s) / poly.eval(s)
+        pz_poly = poly.const_mult(const)
+        adjust_h_poly = h_poly + pz_poly
+
+        # compute the next H-Poly
+        next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
+        print 'next h-poly: %s' % next_h_poly
+        next_h_bar_poly = next_h_poly.normalize()
+
+        #update the value of s
+        s = s - (poly.eval(s) / (1.0 * next_h_bar_poly.eval(s)))
+
+        # update h-poly for the next iteration
+        h_poly = next_h_poly
+
+        # Test for convergence / termination
+        if abs(poly.eval(s)) < abs(err):
+            stage_3_success = True
+            break
+
+    if stage_3_success:
+        print 'Stage 3 was successful'
+        print 'Root is estimated to be at %s' % s
+    else:
+        print ' Stage 3 failure'
 
 
 

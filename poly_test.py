@@ -11,6 +11,9 @@ class MyTestCase(unittest.TestCase):
     sample_poly_2 = [6, -13, 7]
     sample_poly_pow_2 = 2
 
+    sample_poly_3 = [1, -11, 17, -6]
+    sample_poly_pow_3 = 3
+
 
 
 
@@ -205,7 +208,7 @@ class MyTestCase(unittest.TestCase):
 
 
     def test_jt_stage_2(self):
-        p = Poly(self.sample_poly_pow, self.sample_poly)
+        p = Poly(self.sample_poly_pow_3, self.sample_poly_3)
         solve_poly_jt(p)
 
 
