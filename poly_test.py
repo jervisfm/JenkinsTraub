@@ -227,7 +227,6 @@ class MyTestCase(unittest.TestCase):
         for i in xrange(len(expected_roots)):
             expected = expected_roots[i]
             actual = abs(actual_roots[i])
-            print 'Expected vs Actual  = %s | %s' % (expected,actual)
             self.assertAlmostEqual(actual,expected,delta=err)
 
 if __name__ == '__main__':
