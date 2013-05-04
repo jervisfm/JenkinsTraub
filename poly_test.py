@@ -208,8 +208,11 @@ class MyTestCase(unittest.TestCase):
 
 
     def test_jt_stage_2(self):
+        err = 10 ** (-5)
         p = Poly(self.sample_poly_pow_3, self.sample_poly_3)
-        solve_poly_jt(p)
+        p = Poly(self.sample_poly_pow, self.sample_poly)
+
+        solve_poly_jt(p, err)
 
 
         self.assertTrue(1 == 1)

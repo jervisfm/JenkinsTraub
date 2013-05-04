@@ -376,15 +376,20 @@ def get_initial_s(poly):
     err = 10 ** (-5)
 
     beta = solve_poly_newton(cauchy_poly, err)
-    rand = random.uniform(0,1) * math.pi
+    rand = random.uniform(0,1) * 2*math.pi
     return abs(beta) * cmath.exp(1j * rand)
 
-def solve_poly_jt(poly):
+def solve_poly_jt(poly, err = 10 ** (-5)):
     """
         Find the smallest of given polynomial by using the Jenkins-Traub Algorithm.
         poly - polynomial to solve
     """
     #TODO(jervis): complete implementing this
+
+    # Ensure that the polynomial is normalized with its leading coefficient equal to 1.
+    # (i.e. it is a monic polynomial). Algorithm _won't_ work correctly if this assumption
+    # is violated.
+    poly = poly.normalize()
 
     # Stage 1
     # It's good to include this stage in practice though it's not needed theoretically.
@@ -429,6 +434,7 @@ def solve_poly_jt(poly):
         while not stage_two_success: # Retry Loop for Stage 2
             h_poly = initial_h_poly.get_copy()
             s = get_initial_s(poly) # pick a new s on each retry
+            print 'new s == %s' % s
             for i in xrange(LIMIT):
                 # Compute the next H-Polynomial
                 const = -h_poly.eval(s) / poly.eval(s)
@@ -488,8 +494,7 @@ def solve_poly_jt(poly):
         # By calculation, starting with an error of 10, we should need
         # only 300 loop iterations to attain this accuracy.
         # If, that is not the case, then stage 3 has failed and we restart from stage two.
-        LIMIT = 10 ** 5
-        err = 10 ** (-5)
+        LIMIT =  10 ** 4
 
         # compute first shifted s
         h_bar_poly = h_poly.normalize()
@@ -504,7 +509,7 @@ def solve_poly_jt(poly):
 
             # compute the next H-Poly
             next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
-            print 'next h-poly: %s' % next_h_poly
+            print '%d) next h-poly: %s $ %s $ %s $ %s' % (i,next_h_poly, s, poly.eval(s), abs(poly.eval(s)))
             next_h_bar_poly = next_h_poly.normalize()
 
             #update the value of s and errors
@@ -523,12 +528,21 @@ def solve_poly_jt(poly):
                 stage_3_success = True
                 break
 
+            # Test for Errors
+            if math.isnan(s.imag) and math.isnan(s.real):
+                stage_3_success = False
+                break
+
+
+
         if stage_3_success:
             print 'Stage 3 was successful'
             print 'Root is estimated to be at %s' % s
             root_found = True
-        else:
+        else: # Restart from Stage 2
+            stage_two_success = False
             print ' Stage 3 failure. Restarting algorithm'
+
 
 
 
