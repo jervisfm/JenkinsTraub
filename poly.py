@@ -543,7 +543,8 @@ def solve_poly_jt(poly, err = 10 ** (-5)):
             stage_two_success = False
             print ' Stage 3 failure. Restarting algorithm'
 
-
+    # Return the found root
+    return s
 
 
 

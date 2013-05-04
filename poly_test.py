@@ -209,10 +209,14 @@ class MyTestCase(unittest.TestCase):
 
     def test_jt_stage_2(self):
         err = 10 ** (-5)
-        p = Poly(self.sample_poly_pow_3, self.sample_poly_3)
         p = Poly(self.sample_poly_pow, self.sample_poly)
 
-        solve_poly_jt(p, err)
+        actual = solve_poly_jt(p, err)
+        actual = abs(actual)
+        expected = 0.5
+
+        self.assertAlmostEqual(actual,expected,delta=err)
+
 
 
         self.assertTrue(1 == 1)
