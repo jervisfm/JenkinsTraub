@@ -404,7 +404,7 @@ def solve_poly_jt(poly):
 
     # Stage 2
     # ========
-    s = get_initial_s(poly)
+
 
 
     # REMOVE THIS
@@ -420,97 +420,115 @@ def solve_poly_jt(poly):
     # TODO(jervis): remember to implement the retrial aspect. ignoring for now...
 
     LIMIT = 10 ** 2
-
+    initial_h_poly = h_poly.get_copy()
     t_curr = t_prev = t_next = None
-    stage_two_terminated = False
+    stage_two_success = False
+    root_found = False
+    while not root_found: # Retry Loop of whole algorithm
+        print 's = %s' % s
+        while not stage_two_success: # Retry Loop for Stage 2
+            h_poly = initial_h_poly.get_copy()
+            s = get_initial_s(poly) # pick a new s on each retry
+            for i in xrange(LIMIT):
+                # Compute the next H-Polynomial
+                const = -h_poly.eval(s) / poly.eval(s)
+                pz_poly = poly.const_mult(const)
+                adjust_h_poly = h_poly + pz_poly
 
-    print 's = %s' % s
-    for i in xrange(LIMIT):
+                # compute the next H-Poly
+                next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
 
-        # Compute the next H-Polynomial
-        const = -h_poly.eval(s) / poly.eval(s)
-        pz_poly = poly.const_mult(const)
-        adjust_h_poly = h_poly + pz_poly
-
-        # compute the next H-Poly
-        next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
-
-        #print "s=%s | err:%s" %(s,abs(poly.eval(s)))
-        print 'h_poly = %s' % h_poly.pretty_string()
-        print 'const  = %s' % const
-        print 'pz_poly = %s' % pz_poly.pretty_string()
-        print 'adjust-h-poly = %s' % adjust_h_poly.pretty_string()
-        print 'divided-result = %s' % next_h_poly.pretty_string()
-
-
-        # Compute the Ts which we use to know when to stop
-        h_bar_poly = h_poly.normalize() # normalize polynomial by dividing by leading coefficient
-        next_h_bar_poly = next_h_poly.normalize()
-
-        t_curr = s - poly.eval(s) / (1.0 * h_bar_poly.eval(s))
-        t_next = s - poly.eval(s) / (1.0 * next_h_bar_poly.eval(s))
-
-        # Termination Test
-        if i > 0 and abs(t_curr - t_prev) <= 0.5 * abs(t_prev) and abs(t_next - t_curr) <= 0.5 * abs(t_curr):
-            stage_two_terminated = True
-            print 'Success Stage Two terminated correctly at L = %d' % i
-            break
-
-        t_prev = t_curr
-        h_poly = next_h_poly
-
-        print '========'
-        if (i > 30):
-            #exit (1)
-            pass
-
-    if not stage_two_terminated:
-        print 'Failed to terminate correctly in stage 2 '
+                #print "s=%s | err:%s" %(s,abs(poly.eval(s)))
+                print 'h_poly = %s' % h_poly.pretty_string()
+                print 'const  = %s' % const
+                print 'pz_poly = %s' % pz_poly.pretty_string()
+                print 'adjust-h-poly = %s' % adjust_h_poly.pretty_string()
+                print 'divided-result = %s' % next_h_poly.pretty_string()
 
 
-    #exit(1)
+                # Compute the Ts which we use to know when to stop
+                h_bar_poly = h_poly.normalize() # normalize polynomial by dividing by leading coefficient
+                next_h_bar_poly = next_h_poly.normalize()
 
-    # Stage 3
-    # ========
+                t_curr = s - poly.eval(s) / (1.0 * h_bar_poly.eval(s))
+                t_next = s - poly.eval(s) / (1.0 * next_h_bar_poly.eval(s))
 
-    LIMIT = 10 ** 5
-    err = 10 ** (-5)
+                # Termination Test
+                if i > 0 and abs(t_curr - t_prev) <= 0.5 * abs(t_prev) and abs(t_next - t_curr) <= 0.5 * abs(t_curr):
+                    stage_two_success = True
+                    print 'Success Stage Two terminated correctly at L = %d' % i
+                    break
+
+                t_prev = t_curr
+                h_poly = next_h_poly
+
+                print '========'
+                if (i > 30):
+                    #exit (1)
+                    pass
+
+            if not stage_two_success:
+                print 'Failed to terminate correctly in stage 2, retrying ...  '
 
 
-    # compute first shifted s
-    h_bar_poly = h_poly.normalize()
-    s = s - (poly.eval(s) / (1.0 * h_bar_poly.eval(s)))
-    prev_s = 0
-    stage_3_success = False
-    for i in xrange(LIMIT):
+        #exit(1)
 
-        # Compute the next H-Polynomial
-        const = -h_poly.eval(s) / poly.eval(s)
-        pz_poly = poly.const_mult(const)
-        adjust_h_poly = h_poly + pz_poly
+        # Stage 3
+        # ========
+        # If don't make much progress in 10 consecutive steps, assume stage 3
+        # failed and try it completely.
 
-        # compute the next H-Poly
-        next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
-        print 'next h-poly: %s' % next_h_poly
-        next_h_bar_poly = next_h_poly.normalize()
+        num_successive_failures = 0
+        prev_err = poly.eval(s)
+        curr_err = 1
 
-        #update the value of s
-        prev_s = s
-        s = s - (poly.eval(s) / (1.0 * next_h_bar_poly.eval(s)))
+        # Algorithm converges faster than Newton Order 2.
+        # So, this limit is _more_ than enough to find root
+        # to the limits of the precision of double (assuming ~10^-300 accuracy)
+        # By calculation, starting with an error of 10, we should need
+        # only 300 loop iterations to attain this accuracy.
+        # If, that is not the case, then stage 3 has failed and we restart from stage two.
+        LIMIT = 10 ** 5
+        err = 10 ** (-5)
 
-        # update h-poly for the next iteration
-        h_poly = next_h_poly
+        # compute first shifted s
+        h_bar_poly = h_poly.normalize()
+        s = s - (poly.eval(s) / (1.0 * h_bar_poly.eval(s)))
+        prev_s = 0
+        stage_3_success = False
+        for i in xrange(LIMIT):
+            # Compute the next H-Polynomial
+            const = -h_poly.eval(s) / poly.eval(s)
+            pz_poly = poly.const_mult(const)
+            adjust_h_poly = h_poly + pz_poly
 
-        # Test for convergence / termination
-        if abs(poly.eval(s)) < abs(err):
-            stage_3_success = True
-            break
+            # compute the next H-Poly
+            next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
+            print 'next h-poly: %s' % next_h_poly
+            next_h_bar_poly = next_h_poly.normalize()
 
-    if stage_3_success:
-        print 'Stage 3 was successful'
-        print 'Root is estimated to be at %s' % s
-    else:
-        print ' Stage 3 failure'
+            #update the value of s and errors
+            prev_s = s
+            prev_err = poly.eval(prev_s)
+
+            s = s - (poly.eval(s) / (1.0 * next_h_bar_poly.eval(s)))
+            curr_err = poly.eval(s)
+
+            # update h-poly for the next iteration
+            h_poly = next_h_poly
+
+
+            # Test for convergence / termination
+            if abs(poly.eval(s)) < abs(err):
+                stage_3_success = True
+                break
+
+        if stage_3_success:
+            print 'Stage 3 was successful'
+            print 'Root is estimated to be at %s' % s
+            root_found = True
+        else:
+            print ' Stage 3 failure. Restarting algorithm'
 
 
 
