@@ -379,10 +379,35 @@ def get_initial_s(poly):
     rand = random.uniform(0,1) * 2*math.pi
     return abs(beta) * cmath.exp(1j * rand)
 
-def solve_poly_jt(poly, err = 10 ** (-5)):
+def solve_poly_jt(poly, err = 10 **(-5)):
+    """
+        Finds all the roots (including complex ones) of the given Polynomial by using the Jenkins-Traub
+        Algorithm. Roots
+        poly - polynomial to solve
+
+        Roots are returned in order of increasing size.
+    """
+
+    # A polynomial will have as many roots (including complex ones) as the power
+    # of the highest degree term
+    num_roots = poly.highest_degree()
+    ans = []
+    for i in xrange(num_roots):
+        root = solve_smallest_root_poly_jt(poly,err)
+        ans.append(root)
+        last_run = (num_roots - 1 == 1)
+        if not last_run:
+            # Deflate Polynomial to find next largest root
+            # on next iteration
+            poly = poly.divide_linear_poly(1, -root)
+    return ans
+
+def solve_smallest_root_poly_jt(poly, err = 10 ** (-5)):
     """
         Find the smallest of given polynomial by using the Jenkins-Traub Algorithm.
-        poly - polynomial to solve
+        poly - polynomial to solve.
+
+        Passed in Polynomial is not modified in anyway.
     """
     #TODO(jervis): complete implementing this
 
@@ -445,6 +470,7 @@ def solve_poly_jt(poly, err = 10 ** (-5)):
                 next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
 
                 #print "s=%s | err:%s" %(s,abs(poly.eval(s)))
+
                 print 'h_poly = %s' % h_poly.pretty_string()
                 print 'const  = %s' % const
                 print 'pz_poly = %s' % pz_poly.pretty_string()

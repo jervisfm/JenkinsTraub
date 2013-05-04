@@ -207,20 +207,28 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(expected == actual)
 
 
-    def test_jt_stage_2(self):
+    def test_solve_smallest_root_poly_jt(self):
         err = 10 ** (-5)
         p = Poly(self.sample_poly_pow, self.sample_poly)
 
-        actual = solve_poly_jt(p, err)
+        actual = solve_smallest_root_poly_jt(p, err)
         actual = abs(actual)
         expected = 0.5
 
         self.assertAlmostEqual(actual,expected,delta=err)
 
+    def test_solve_all_roots_poly_jt(self):
+        err = 10 ** (-5)
+        p = Poly(self.sample_poly_pow, self.sample_poly)
 
+        actual_roots = solve_poly_jt(p, err)
+        expected_roots = [0.5, 2, 3]
 
-        self.assertTrue(1 == 1)
-
+        for i in xrange(len(expected_roots)):
+            expected = expected_roots[i]
+            actual = abs(actual_roots[i])
+            print 'Expected vs Actual  = %s | %s' % (expected,actual)
+            self.assertAlmostEqual(actual,expected,delta=err)
 
 if __name__ == '__main__':
     unittest.main()
