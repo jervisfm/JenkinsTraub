@@ -14,6 +14,14 @@ class MyTestCase(unittest.TestCase):
     sample_poly_3 = [1, -11, 17, -6]
     sample_poly_pow_3 = 3
 
+    # The homework polynomial
+    # It's a polynomial with the following roots:
+    # 1-i ; 1+i ; 1 ; 1.01 ; 5
+    # 'i' is the symbol for imaginary number
+    # When expanded I got the following polynomial:
+    # x^5 - 9.01*x^4 + (27.08)*x^3 -(41.19)*x^2 + (32.22)*x +  - 10.1
+    hw_poly = [1, -9.01, 27.08, -41.19, 32.22, -10.1]
+    hw_poly_pow = 5
 
 
 
@@ -228,6 +236,29 @@ class MyTestCase(unittest.TestCase):
             expected = expected_roots[i]
             actual = abs(actual_roots[i])
             self.assertAlmostEqual(actual,expected,delta=err)
+
+    def test_solve_all_root_homewrok(self):
+        """
+            Test Finding all the roots for the Homework Polynomial
+        """
+        err = 10 ** (-5)
+        p = Poly(self.hw_poly_pow, self.hw_poly)
+
+        actual_roots = solve_poly_jt(p, err)
+        expected_roots = [1, 1.01, complex(1,-1), complex(1,1), 5]
+
+        print actual_roots
+
+        # Use Big Delta b'se of the two close roots 1 and 1.01
+        delta = 5 * 10 ** (-2)
+        delta_comp = 5 * 10 ** (-2)
+        for i in xrange(len(expected_roots)):
+            expected = expected_roots[i]
+            actual = actual_roots[i]
+            self.assertAlmostEqual(abs(actual),abs(expected),delta=delta)
+            self.assertAlmostEqual(abs(actual.real),abs(expected.real),delta=delta_comp)
+            self.assertAlmostEqual(abs(actual.imag),abs(expected.imag),delta=delta_comp)
+
 
 if __name__ == '__main__':
     unittest.main()

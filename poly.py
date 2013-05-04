@@ -528,6 +528,11 @@ def solve_smallest_root_poly_jt(poly, err = 10 ** (-5)):
         prev_s = 0
         stage_3_success = False
         for i in xrange(LIMIT):
+            # Test for convergence / termination
+            if abs(poly.eval(s)) < abs(err):
+                stage_3_success = True
+                break
+
             # Compute the next H-Polynomial
             const = -h_poly.eval(s) / poly.eval(s)
             pz_poly = poly.const_mult(const)
@@ -548,11 +553,6 @@ def solve_smallest_root_poly_jt(poly, err = 10 ** (-5)):
             # update h-poly for the next iteration
             h_poly = next_h_poly
 
-
-            # Test for convergence / termination
-            if abs(poly.eval(s)) < abs(err):
-                stage_3_success = True
-                break
 
             # Test for Errors
             if math.isnan(s.imag) and math.isnan(s.real):
