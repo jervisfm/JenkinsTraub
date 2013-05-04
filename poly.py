@@ -387,7 +387,7 @@ def solve_poly_jt(poly):
     #TODO(jervis): complete implementing this
 
     # Stage 1
-    # It's _very_ good to include this stage in practice though it's not needed theoretically.
+    # It's good to include this stage in practice though it's not needed theoretically.
 
     M = 5 # 5 is empirically good for polynomials with degree < 50
     h_poly = poly.get_derivative()
@@ -400,7 +400,6 @@ def solve_poly_jt(poly):
 
         # compute the next H-Poly
         h_poly = adjust_h_poly.divide_linear_poly(1, 0)
-
 
 
     # Stage 2
@@ -420,13 +419,13 @@ def solve_poly_jt(poly):
 
     # TODO(jervis): remember to implement the retrial aspect. ignoring for now...
 
-    L = 10 ** 4
+    LIMIT = 10 ** 2
 
     t_curr = t_prev = t_next = None
     stage_two_terminated = False
 
     print 's = %s' % s
-    for i in xrange(L):
+    for i in xrange(LIMIT):
 
         # Compute the next H-Polynomial
         const = -h_poly.eval(s) / poly.eval(s)
@@ -454,19 +453,22 @@ def solve_poly_jt(poly):
         # Termination Test
         if i > 0 and abs(t_curr - t_prev) <= 0.5 * abs(t_prev) and abs(t_next - t_curr) <= 0.5 * abs(t_curr):
             stage_two_terminated = True
-            #print 'Success Stage Two terminated correctly at L = %d' % i
-            #break
+            print 'Success Stage Two terminated correctly at L = %d' % i
+            break
 
         t_prev = t_curr
         h_poly = next_h_poly
 
         print '========'
-        if (i == 3):
-            exit (1)
+        if (i > 30):
+            #exit (1)
+            pass
 
     if not stage_two_terminated:
         print 'Failed to terminate correctly in stage 2 '
 
+
+    #exit(1)
 
     # Stage 3
     # ========
@@ -474,9 +476,11 @@ def solve_poly_jt(poly):
     LIMIT = 10 ** 5
     err = 10 ** (-5)
 
+
     # compute first shifted s
     h_bar_poly = h_poly.normalize()
     s = s - (poly.eval(s) / (1.0 * h_bar_poly.eval(s)))
+    prev_s = 0
     stage_3_success = False
     for i in xrange(LIMIT):
 
@@ -491,6 +495,7 @@ def solve_poly_jt(poly):
         next_h_bar_poly = next_h_poly.normalize()
 
         #update the value of s
+        prev_s = s
         s = s - (poly.eval(s) / (1.0 * next_h_bar_poly.eval(s)))
 
         # update h-poly for the next iteration
