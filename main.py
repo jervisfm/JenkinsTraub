@@ -1,16 +1,11 @@
-from math import ceil, pi, sin, exp, sqrt
-
-import sys
 import argparse
 from poly import *
-
 
 __author__ = 'Jervis Muindi'
 # Date: May 2013
 # Numerical Analysis and Algorithms
 # Extra Credit
 # Jenkins Traub Algorithm
-
 
 def main():
 
@@ -46,8 +41,6 @@ def main():
     for root in ans:
         print  '%d) %s' % (counter, root)
         counter += 1
-
-
 
 if __name__ == '__main__':
     main()
