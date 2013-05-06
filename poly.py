@@ -434,32 +434,16 @@ def solve_smallest_root_poly_jt(poly, err = 10 ** (-5)):
 
     # Stage 2
     # ========
-
-
-
-    # REMOVE THIS
-    #print s
-    #exit(1)
-
-    #DEBUGGING ONLY .. DELETE ME
-    #s = complex(0.281670991015,0.0843018871362)
-    s = complex(-0.27627567979,0.103671323125)
-
-
-
     # TODO(jervis): remember to implement the retrial aspect. ignoring for now...
-
     LIMIT = 10 ** 2
     initial_h_poly = h_poly.get_copy()
     t_curr = t_prev = t_next = None
     stage_two_success = False
     root_found = False
     while not root_found: # Retry Loop of whole algorithm
-        print 's = %s' % s
         while not stage_two_success: # Retry Loop for Stage 2
             h_poly = initial_h_poly.get_copy()
             s = get_initial_s(poly) # pick a new s on each retry
-            print 'new s == %s' % s
             for i in xrange(LIMIT):
                 # Compute the next H-Polynomial
                 const = -h_poly.eval(s) / poly.eval(s)
@@ -468,15 +452,6 @@ def solve_smallest_root_poly_jt(poly, err = 10 ** (-5)):
 
                 # compute the next H-Poly
                 next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
-
-                #print "s=%s | err:%s" %(s,abs(poly.eval(s)))
-
-                print 'h_poly = %s' % h_poly.pretty_string()
-                print 'const  = %s' % const
-                print 'pz_poly = %s' % pz_poly.pretty_string()
-                print 'adjust-h-poly = %s' % adjust_h_poly.pretty_string()
-                print 'divided-result = %s' % next_h_poly.pretty_string()
-
 
                 # Compute the Ts which we use to know when to stop
                 h_bar_poly = h_poly.normalize() # normalize polynomial by dividing by leading coefficient
@@ -494,16 +469,10 @@ def solve_smallest_root_poly_jt(poly, err = 10 ** (-5)):
                 t_prev = t_curr
                 h_poly = next_h_poly
 
-                print '========'
-                if (i > 30):
-                    #exit (1)
-                    pass
 
             if not stage_two_success:
                 print 'Failed to terminate correctly in stage 2, retrying ...  '
 
-
-        #exit(1)
 
         # Stage 3
         # ========
@@ -559,8 +528,6 @@ def solve_smallest_root_poly_jt(poly, err = 10 ** (-5)):
                 stage_3_success = False
                 break
 
-
-
         if stage_3_success:
             print 'Stage 3 was successful'
             print 'Root is estimated to be at %s' % s
@@ -571,8 +538,3 @@ def solve_smallest_root_poly_jt(poly, err = 10 ** (-5)):
 
     # Return the found root
     return s
-
-
-
-
-
