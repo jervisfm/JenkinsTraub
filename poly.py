@@ -29,6 +29,11 @@ class Poly:
 
 
     def eval(self, x):
+        """
+            Evaluates the current polynomial at the given point
+            x - the point to evaluate at
+
+        """
         result = 0
         curr_pow = self.highest_degree()
         for c in self.coeff:
@@ -48,13 +53,22 @@ class Poly:
         return Poly(self.highest_degree(), result)
 
     def highest_degree(self):
+        """
+            Returns the value of the degree of the term with the highest power in the polynomial
+        """
         return len(self.coeff) - 1
 
     def size(self):
+        """
+            Returns the total number of terms in the polynomial (including the constant and zero-coefficient terms)
+        """
         return len(self.coeff)
 
 
     def __eq__(self, other):
+        """
+            Returns true only if all the coefficient exactly match.
+        """
         if  (self.size() != other.size()):
             return False
         else:
@@ -65,6 +79,9 @@ class Poly:
             return True
 
     def pretty_string(self):
+        """
+            Produces a pretty representation of the polynomial
+        """
         s = ''
         pow = self.highest_degree()
         for x in self.coeff:
@@ -75,6 +92,10 @@ class Poly:
         return s
 
     def __str__(self):
+        """
+            Produces a string represenation of the polynomial given in terms of a tuple (x,y)
+            where x is the coefficient of a term, and y is the power/degree of that term.
+        """
         s = '| '
         pow = self.highest_degree()
         for x in self.coeff:
@@ -88,7 +109,7 @@ class Poly:
 
     def __add__(self, other):
         """
-            Add the two polynomials non-destructively
+            Add this  polynomial to the other one non-destructively.
         """
         big_poly = None
         small_poly = None
@@ -150,6 +171,7 @@ class Poly:
     def normalize(self):
         """
             Divides the polynomial by the leading coefficient
+            so that we would have a monic polynomial
         """
         result = []
         norm_const = self.coeff[0]
@@ -347,7 +369,7 @@ class Term:
 
 def get_empty_poly(deg):
     """
-    Creates a new empty polynomial of the given degree
+        Creates a new empty polynomial of the given degree
     """
     if deg < 0:
         raise ValueError('Invalid polynomial degree')
@@ -372,6 +394,11 @@ def solve_poly_newton(poly, err):
 
 
 def get_initial_s(poly):
+    """
+        Computes a random initial s seed to use for beginning of stage 2 of the Jenkins Traub Algorithm
+        Seed s is random and multiple calls for a given polynomial will result different complex numbers. Note however,
+        per the algorithm, they different complex number would still have the same magnitude.
+    """
     cauchy_poly = poly.get_cauchy_poly()
     err = 10 ** (-5)
 
@@ -434,7 +461,6 @@ def solve_smallest_root_poly_jt(poly, err = 10 ** (-5)):
 
     # Stage 2
     # ========
-    # TODO(jervis): remember to implement the retrial aspect. ignoring for now...
     LIMIT = 10 ** 2
     initial_h_poly = h_poly.get_copy()
     t_curr = t_prev = t_next = None
@@ -476,15 +502,13 @@ def solve_smallest_root_poly_jt(poly, err = 10 ** (-5)):
 
         # Stage 3
         # ========
-        # If don't make much progress in 10 consecutive steps, assume stage 3
-        # failed and try it completely.
 
         num_successive_failures = 0
         prev_err = poly.eval(s)
         curr_err = 1
 
         # Algorithm converges faster than Newton Order 2.
-        # So, this limit is _more_ than enough to find root
+        # So, this limit is way _more_ than enough to find root
         # to the limits of the precision of double (assuming ~10^-300 accuracy)
         # By calculation, starting with an error of 10, we should need
         # only 300 loop iterations to attain this accuracy.
