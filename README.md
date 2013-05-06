@@ -72,3 +72,10 @@ The roots found in order of increasing magnitude are:
 4) (0.999998897167-1.00000085204j)
 5) (4.99999990563-3.41668142667e-08j)
 </pre>
+
+Testing
+========
+A unit testing methodology was followed in the writing of this program. Test written can be found in the poly_test.py
+file. You can run all the tests by executing that file.
+
+`$ python poly_test.py`
