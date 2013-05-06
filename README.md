@@ -1,6 +1,6 @@
 Jervis Muindi   
 Numerical Algorithms and Complexity    
-Jenkins-Traub Algorithm  
+Jenkins-Traub Algorithm
 May 2013
 
 
