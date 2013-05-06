@@ -20,8 +20,12 @@ You
 <pre>
    python main.py -p [Polynomial] -e [error]
          Where:
-         [Polynomial] Required Parameter. This is a listing of all coefficients of the polynomial. The listing goes from the highest degree term and proceed to lower degree terms. All coefficients of all terms must be explicitly listed. Lastly remember to use a space to separate the number.
-         [error] Error bound to use on the roots. This is an optional parameter and it defaults to 10^(-6) if not specified
+         [Polynomial] Required Parameter. This is a listing of all coefficients of the polynomial.
+                      The listing goes from the highest degree term and proceed to lower degree terms.
+                      All coefficients of all terms must be explicitly listed.
+                      Lastly remember to use a space to separate the number.
+         [error] Error bound to use on the roots. This is an optional parameter.
+                 Tt defaults to 10^(-6) if not specified
 </pre>
 
 For Example:    
