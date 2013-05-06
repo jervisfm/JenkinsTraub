@@ -8,9 +8,9 @@ Introduction
 ============
 This project contains code that provides an implementation of the Jenkin-Traub Algorithm. 
 
-This algorithm is a faster than Newton method (which has order 2 AKA quadratic convergence) for finding the roots of polynomials. It can handle complex coefficients and roots and does not suffer from stability issues.
+This algorithm is a faster than Newton method (which has order 2, i.e. quadratic, convergence) for finding the roots of polynomials. It can handle complex coefficients and roots and does not suffer from stability issues.
 
-For an overview of the algorithm, the [Wikipedia article on the algorithm](https://en.wikipedia.org/wiki/Jenkins–Traub_algorithm) is a good starting point. More complete details can be found in the [original Paper](http://link.springer.com/article/10.1007%2FBF02163334)  published by Jenkins and Traub in 1970.
+For an overview of the algorithm, the [Wikipedia article on the algorithm](https://en.wikipedia.org/wiki/Jenkins–Traub_algorithm) is a good starting point. More complete details can be found in the [original Paper](http://link.springer.com/article/10.1007%2FBF02163334) written by Jenkins and Traub in 1968 and published in 1970.
 
 
 How to Run
@@ -81,7 +81,7 @@ The roots found in order of increasing magnitude are:
 
 Testing
 ========
-A unit testing methodology was followed in the writing of this program. Test written can be found in the poly_test.py
-file. You can run all the tests by executing that file.
+A unit testing methodology was followed in the development of this program. Tests written can be found in the poly_test.py
+file. You can run all the tests by executing that file and ensuring that everything is working as expected.
 
 `$ python poly_test.py`
