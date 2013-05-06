@@ -17,7 +17,7 @@ def main():
     poly_help_msg = 'List of Coefficients of the polynomial to find the roots for. Start from the highest power and proceed in a descending order until the constant term. All coefficients must be specified and non skipped'
 
     parser = argparse.ArgumentParser(description='General Polynomial Root Solver. It applies the Jenkins-Traub Algorithm')
-    parser.add_argument('-p', '--polynomial', nargs='+', type=float, required=True,
+    parser.add_argument('-p', '--polynomial', nargs='+', type=complex, required=True,
                         help=poly_help_msg)
     parser.add_argument('-e', '--error', type=float)
 
