@@ -24,7 +24,8 @@ The program accepts two parameters one of which is required. These are described
          [Polynomial] Required Parameter. This is a listing of all coefficients of the polynomial.
                       The listing goes from the highest degree term and proceed to lower degree terms.
                       All coefficients of all terms must be explicitly listed.
-                      Lastly remember to use a space to separate the number.
+                      The symbol "j" must be used to denote a complex number coefficent. Example: 1+2j
+                      Lastly, remember to use a space to separate the numbers.
          [error] Error bound to use on the roots. This is an optional parameter.
                  Tt defaults to 10^(-6) if not specified
 </pre>
