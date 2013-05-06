@@ -11,37 +11,6 @@ __author__ = 'Jervis Muindi'
 # Extra Credit
 # Jenkins Traub Algorithm
 
-def do_main(x0):
-    """
-        Main program code..
-        x0 - coefficients of polynomial
-    """
-    print 'Using Polynomial with coefficents : %s' % str(x0)
-
-
-def usage():
-    #TODO(jervis): update this
-    print '**************'
-    print 'Jenkins Traub Polynomial Solver: '
-    print 'Usage: '
-    print 'python main.py [P]'
-    print '     [P] : is comma separated list of coefficeints of polynomial to solve for. ' \
-          'First number is the highest degree'
-    print '\nExample: python main.py 1 2 3 4 5 \n'
-
-def is_number(s):
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
-
-def valid_inputs(x0):
-    if not is_number(x0):
-        'x-value must be a number : %s' % str(x0)
-        return False
-    else:
-        return True
 
 def main():
 
