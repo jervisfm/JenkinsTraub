@@ -509,7 +509,6 @@ def solve_smallest_root_poly_jt(poly, err = 10 ** (-5)):
 
             # compute the next H-Poly
             next_h_poly = adjust_h_poly.divide_linear_poly(1, -s)
-            print '%d) next h-poly: %s $ %s $ %s $ %s' % (i,next_h_poly, s, poly.eval(s), abs(poly.eval(s)))
             next_h_bar_poly = next_h_poly.normalize()
 
             #update the value of s and errors
