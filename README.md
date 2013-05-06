@@ -2,7 +2,7 @@ Jervis Muindi
 Numerical Algorithms and Complexity    
 Jenkins-Traub Algorithm
 May 2013
-Extra Credit
+
 
 Introduction
 ============
