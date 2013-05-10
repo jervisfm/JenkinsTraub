@@ -33,7 +33,7 @@ The program accepts two parameters one of which is required. These are described
 For Example:    
 To find the roots of the polynomial x^5 - 9.01*x^4 + (27.08)*x^3 -(41.19)*x^2 + (32.22)*x +  - 10.1
 You can do the following
-`python main.py -p 1, -9.01, 27.08, -41.19, 32.22, -10.1`
+`python main.py -p 1 -9.01 27.08 -41.19 32.22 -10.1`
 
 
 Sample Output
