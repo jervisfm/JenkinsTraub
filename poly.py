@@ -174,7 +174,18 @@ class Poly:
             so that we would have a monic polynomial
         """
         result = []
-        norm_const = self.coeff[0]
+        norm_const = None
+        
+        # Usually the first highest coefficient is good enough. But sometimes that
+        # is zero. So we look through all coefficietns to find the first viable one.
+        for coeff in self.coeff:
+            if coeff != 0:
+                norm_const = coeff
+                break
+        
+        if norm_const is None:
+            print "Failed to Normalize Polynomial: %s" % self
+            
         for coeff in self.coeff:
             val = coeff / (1.0 * norm_const)
             result.append(val)
