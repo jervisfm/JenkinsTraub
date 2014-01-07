@@ -270,7 +270,7 @@ class MyTestCase(unittest.TestCase):
         p = Poly(poly_pow, input_poly)
 
         actual_roots = solve_poly_jt(p, err)
-        expected_roots = [-0.92388, -0.3826, 0.3826, 0.92388]
+        expected_roots = [-0.3826, 0.3826, -0.92388, 0.92388]
 
         print actual_roots
 
@@ -281,9 +281,6 @@ class MyTestCase(unittest.TestCase):
             expected = expected_roots[i]
             actual = actual_roots[i]
             
-            print 'Expected: %s' % expected
-            print 'Actual: %s' % actual
-
             self.assertAlmostEqual(abs(actual),abs(expected),delta=delta)
             self.assertAlmostEqual(abs(actual.real),abs(expected.real),delta=delta_comp)
             self.assertAlmostEqual(abs(actual.imag),abs(expected.imag),delta=delta_comp)
