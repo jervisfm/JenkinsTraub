@@ -260,5 +260,30 @@ class MyTestCase(unittest.TestCase):
             self.assertAlmostEqual(abs(actual.imag),abs(expected.imag),delta=delta_comp)
 
 
+    def test_solve_quartic_poly(self):
+        """
+            Test Finding a quartic polynomial. 
+        """
+        err = 10 ** (-5)
+        poly_pow = 4
+        input_poly = [1, 0, -1, 0, 0.125]
+        p = Poly(poly_pow, input_poly)
+
+        actual_roots = solve_poly_jt(p, err)
+        expected_roots = [-0.92388, -0.3826, 0.3826, 0.92388]
+
+        print actual_roots
+
+        # Use Big Delta as roots as far apart.
+        delta = 5 * 10 ** (-2)
+        delta_comp = 5 * 10 ** (-2)
+        for i in xrange(len(expected_roots)):
+            expected = expected_roots[i]
+            actual = actual_roots[i]
+            self.assertAlmostEqual(abs(actual),abs(expected),delta=delta)
+            self.assertAlmostEqual(abs(actual.real),abs(expected.real),delta=delta_comp)
+            self.assertAlmostEqual(abs(actual.imag),abs(expected.imag),delta=delta_comp)
+
+
 if __name__ == '__main__':
     unittest.main()
