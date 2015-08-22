@@ -286,5 +286,31 @@ class MyTestCase(unittest.TestCase):
             self.assertAlmostEqual(abs(actual.imag),abs(expected.imag),delta=delta_comp)
 
 
+    def test_solve_simple_complex_poly(self):
+        """
+            Regression test on finding complex roots for a simple polynomial: x^2 + 1 = 0.
+        """
+        err = 10 ** (-3)
+        poly_pow = 2
+        input_poly = [1, 0, 1]
+        p = Poly(poly_pow, input_poly)
+
+        actual_roots = solve_poly_jt(p, err)
+        expected_roots = [0+1j, 0-1j]
+
+        print actual_roots
+
+        # Use same comparison delta as |err| given to solve_poly_gt()
+        delta = err
+        delta_complex = err
+        for i in xrange(len(expected_roots)):
+            expected = expected_roots[i]
+            actual = actual_roots[i]
+
+            self.assertAlmostEqual(abs(actual),abs(expected),delta=delta)
+            self.assertAlmostEqual(abs(actual.real),abs(expected.real),delta=delta_complex)
+            self.assertAlmostEqual(abs(actual.imag),abs(expected.imag),delta=delta_complex)
+
+
 if __name__ == '__main__':
     unittest.main()
