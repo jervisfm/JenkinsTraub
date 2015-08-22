@@ -23,7 +23,22 @@ class MyTestCase(unittest.TestCase):
     hw_poly = [1, -9.01, 27.08, -41.19, 32.22, -10.1]
     hw_poly_pow = 5
 
+    def isNumberPositive(self, number):
+        """
+            Returns true if number is positive
+        """
+        return number > 0
 
+    def assertRootsEqual(self, expected, actual, epilson=10**(-3)):
+        """
+          Verfies that |expected| root matches |actual| root.
+        """
+        self.assertAlmostEqual(abs(actual),abs(expected),delta=epilson)
+        self.assertAlmostEqual(abs(actual.real),abs(expected.real),delta=epilson)
+        self.assertAlmostEqual(abs(actual.imag),abs(expected.imag),delta=epilson)
+        # Verify also that signedness of the components also match
+        self.assertEqual(self.isNumberPositive(actual.real), self.isNumberPositive(expected.real))
+        self.assertEqual(self.isNumberPositive(actual.imag), self.isNumberPositive(expected.imag))
 
     def test_poly_init(self):
 
@@ -300,17 +315,10 @@ class MyTestCase(unittest.TestCase):
 
         print actual_roots
 
-        # Use same comparison delta as |err| given to solve_poly_gt()
-        delta = err
-        delta_complex = err
         for i in xrange(len(expected_roots)):
             expected = expected_roots[i]
             actual = actual_roots[i]
-
-            self.assertAlmostEqual(abs(actual),abs(expected),delta=delta)
-            self.assertAlmostEqual(abs(actual.real),abs(expected.real),delta=delta_complex)
-            self.assertAlmostEqual(abs(actual.imag),abs(expected.imag),delta=delta_complex)
-
+            self.assertRootsEqual(expected,actual, err)
 
 if __name__ == '__main__':
     unittest.main()
