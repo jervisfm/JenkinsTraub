@@ -33,12 +33,20 @@ class MyTestCase(unittest.TestCase):
         """
           Verfies that |expected| root matches |actual| root.
         """
-        self.assertAlmostEqual(abs(actual),abs(expected),delta=epilson)
-        self.assertAlmostEqual(abs(actual.real),abs(expected.real),delta=epilson)
-        self.assertAlmostEqual(abs(actual.imag),abs(expected.imag),delta=epilson)
-        # Verify also that signedness of the components also match
-        self.assertEqual(self.isNumberPositive(actual.real), self.isNumberPositive(expected.real))
-        self.assertEqual(self.isNumberPositive(actual.imag), self.isNumberPositive(expected.imag))
+        self.assertAlmostEqual(abs(actual), abs(expected), delta=epilson)
+        self.assertAlmostEqual(abs(actual.real), abs(expected.real), delta=epilson)
+        self.assertAlmostEqual(abs(actual.imag), abs(expected.imag), delta=epilson)
+
+        # Verify also that signedness of the components also match.
+        # To account for floating point issues, only do exact signedness checking
+        # for numbers not close to zero. If the number is close to zero, then it
+        # having an incorrect sign won't signficantly/materially affect the 
+        # computed result  (think of complex number as vectors on 2D plane).
+        if (abs(actual.real) > abs(epilson) and abs(expected.real) > abs(epilson)):
+            self.assertEqual(self.isNumberPositive(actual.real), self.isNumberPositive(expected.real))
+
+        if (abs(actual.imag) > abs(epilson) and abs(expected.imag) > abs(epilson)):
+            self.assertEqual(self.isNumberPositive(actual.imag), self.isNumberPositive(expected.imag))
 
     def test_poly_init(self):
 
@@ -311,14 +319,27 @@ class MyTestCase(unittest.TestCase):
         p = Poly(poly_pow, input_poly)
 
         actual_roots = solve_poly_jt(p, err)
-        expected_roots = [0+1j, 0-1j]
 
         print actual_roots
+
+        # The expected roots are 1j, -1j.
+        # Since the two roots have the same magnitude but opposite signs the order in
+        # which they are found is non-deterministic. Thus, check sign of the actual
+        # roots to know what the right expected order is.
+        expected_roots = []
+        first_complex_root_positive = self.isNumberPositive(actual_roots[0].imag)
+        if first_complex_root_positive:
+            expected_roots = [0+1j, 0-1j]
+        else:
+            expected_roots = [0-1j, 0+1j]
 
         for i in xrange(len(expected_roots)):
             expected = expected_roots[i]
             actual = actual_roots[i]
             self.assertRootsEqual(expected,actual, err)
+
+        # Second possible order
+        expected_roots2 = [0-1j, 0+1j]
 
 if __name__ == '__main__':
     unittest.main()
