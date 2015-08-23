@@ -13,6 +13,10 @@ This algorithm is a faster than Newton method (which has order 2, i.e. quadratic
 For an overview of the algorithm, the [Wikipedia article on the algorithm](https://en.wikipedia.org/wiki/Jenkins–Traub_algorithm) is a good starting point. More complete details can be found in the [original Paper](http://link.springer.com/article/10.1007%2FBF02163334) written by Jenkins and Traub in 1968 and published in 1970.
 
 
+Requirements
+===========
+This was tested on Python 2.7+
+
 How to Run
 ==========
 
