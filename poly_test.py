@@ -338,8 +338,5 @@ class MyTestCase(unittest.TestCase):
             actual = actual_roots[i]
             self.assertRootsEqual(expected,actual, err)
 
-        # Second possible order
-        expected_roots2 = [0-1j, 0+1j]
-
 if __name__ == '__main__':
     unittest.main()
