@@ -4,6 +4,8 @@ import random
 import cmath
 import math
 
+VERBOSE_DEBUG = False
+
 class Poly:
     """
         Represents a polynomial
@@ -433,6 +435,10 @@ def solve_poly_jt(poly, err = 10 **(-5)):
         root = solve_smallest_root_poly_jt(poly,err)
         ans.append(root)
         last_run = (num_roots - 1 == i)
+        if VERBOSE_DEBUG:
+            print 'Solving Poly: %s ' % poly
+            print 'Found Root: %s' % root
+            print 'Negative Root: %s' % (-root)
         if not last_run:
             # Deflate Polynomial to find next largest root
             # on next iteration
