@@ -432,7 +432,7 @@ def solve_poly_jt(poly, err = 10 **(-5)):
     for i in xrange(num_roots):
         root = solve_smallest_root_poly_jt(poly,err)
         ans.append(root)
-        last_run = (num_roots - 1 == 1)
+        last_run = (num_roots - 1 == i)
         if not last_run:
             # Deflate Polynomial to find next largest root
             # on next iteration
