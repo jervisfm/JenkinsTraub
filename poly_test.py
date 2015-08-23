@@ -338,5 +338,26 @@ class MyTestCase(unittest.TestCase):
             actual = actual_roots[i]
             self.assertRootsEqual(expected,actual, err)
 
+    def test_solve_simple_complex_poly2(self):
+        """
+            Regression test on finding complex roots for a simple polynomial:
+            x^2 + 2x - 3 = 0.
+        """
+        err = 10 ** (-3)
+        poly_pow = 2
+        input_poly = [1, 2, -3]
+        p = Poly(poly_pow, input_poly)
+
+        actual_roots = solve_poly_jt(p, err)
+
+        print actual_roots
+
+        # The expected roots are 1, -3.
+        expected_roots = [1, -3]
+        for i in xrange(len(expected_roots)):
+            expected = expected_roots[i]
+            actual = actual_roots[i]
+            self.assertRootsEqual(expected,actual, err)
+
 if __name__ == '__main__':
     unittest.main()
